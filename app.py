@@ -6,70 +6,26 @@ import pandas as pd
 with open('your_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
-# Function to preprocess user input
-def preprocess_input(user_input):
-    # Create a DataFrame with the user input
-    input_data = pd.DataFrame(user_input, index=[0])
 
-    # Perform any necessary preprocessing on the input data
-    # ...
+# Define the feature names
+feature_names = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT']
 
-    return input_data
+# Create the input form
+st.title('Real Estate Price Predictor')
 
-# Function to predict the real estate price
-def predict_price(input_data):
-    # Make predictions using the loaded model
-    predictions = model.predict(input_data)
+# Input form for feature values
+feature_inputs = []
+for feature in feature_names:
+    value = st.number_input(f"Enter value for {feature}", key=feature)
+    feature_inputs.append(value)
 
-    # Return the predicted price
-    return predictions[0]
+# Predict function
+def predict_price(features):
+    input_df = pd.DataFrame([features], columns=feature_names)
+    prediction = model.predict(input_df)[0]
+    return prediction
 
-# Main app code
-def main():
-    # Set the app title
-    st.title("Real Estate Price Predictor")
-
-    # Create input fields for user input
-    crim = st.number_input("CRIM")
-    zn = st.number_input("ZN")
-    indus = st.number_input("INDUS")
-    chas = st.number_input("CHAS")
-    nox = st.number_input("NOX")
-    rm = st.number_input("RM")
-    age = st.number_input("AGE")
-    dis = st.number_input("DIS")
-    rad = st.number_input("RAD")
-    tax = st.number_input("TAX")
-    ptratio = st.number_input("PTRATIO")
-    b = st.number_input("B")
-    lstat = st.number_input("LSTAT")
-
-    # Create a dictionary with the user input
-    user_input = {
-        'CRIM': crim,
-        'ZN': zn,
-        'INDUS': indus,
-        'CHAS': chas,
-        'NOX': nox,
-        'RM': rm,
-        'AGE': age,
-        'DIS': dis,
-        'RAD': rad,
-        'TAX': tax,
-        'PTRATIO': ptratio,
-        'B': b,
-        'LSTAT': lstat
-    }
-
-    # Preprocess the user input
-    input_data = preprocess_input(user_input)
-
-    # Check if the user has provided all the required input fields
-    if st.button("Predict"):
-        # Make predictions and display the result
-        price = predict_price(input_data)
-        st.success(f"The predicted price is: ${price:.2f}")
-
-# Run the app
-if __name__ == '__main__':
-    main()
+# Predict button
+if st.button('Predict'):
+    price = predict_price(feature_inputs)
+    st.success(f'The predicted price is ${price:.2f}')
