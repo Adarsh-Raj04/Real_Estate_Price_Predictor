@@ -3,7 +3,8 @@ import pickle
 import pandas as pd
 
 # Load the trained model
-model = with open(your_model.pkl, 'rb') as f:
+with open('your_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 # Function to preprocess user input
 def preprocess_input(user_input):
