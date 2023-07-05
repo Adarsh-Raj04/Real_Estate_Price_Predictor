@@ -3,7 +3,7 @@ import joblib
 import pandas as pd
 
 # Load the trained model
-model = joblib.load('model.joblib')
+model = with open(your_model.pkl, 'rb') as f:
 
 # Function to preprocess user input
 def preprocess_input(user_input):
