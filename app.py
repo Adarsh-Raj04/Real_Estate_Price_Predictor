@@ -1,9 +1,10 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import numpy as np
 
 # Load the model
-model = joblib.load('realestate.joblib')
+model = joblib.load('model.joblib')
 
 # Define the feature names
 feature_names = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT']
