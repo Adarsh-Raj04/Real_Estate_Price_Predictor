@@ -3,7 +3,7 @@ import joblib
 import pandas as pd
 
 # Load the trained model
-model = joblib.load('realestate.joblib')
+model = joblib.load('model.joblib')
 
 # Function to preprocess user input
 def preprocess_input(user_input):
