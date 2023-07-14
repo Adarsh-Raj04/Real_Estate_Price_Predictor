@@ -6,26 +6,34 @@ import pandas as pd
 with open('your_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
-
-# Define the feature names
+# Define feature names
 feature_names = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT']
 
-# Create the input form
-st.title('Real Estate Price Predictor')
-
-# Input form for feature values
-feature_inputs = []
-for feature in feature_names:
-    value = st.number_input(f"Enter value for {feature}", key=feature)
-    feature_inputs.append(value)
-
-# Predict function
-def predict_price(features):
-    input_df = pd.DataFrame([features], columns=feature_names)
-    prediction = model.predict(input_df)[0]
+def predict_house_price(features):
+    # Perform prediction
+    prediction = model.predict(features)
     return prediction
 
-# Predict button
-if st.button('Predict'):
-    price = predict_price(feature_inputs)
-    st.success(f'The predicted price is ${price:.2f}')
+def main():
+    st.title("House Price Prediction")
+
+    # Create form for user input
+    form = st.form(key='input_form')
+
+    # Add input fields for each feature
+    input_features = []
+    for feature in feature_names:
+        value = form.number_input(feature, step=0.1)
+        input_features.append(value)
+
+    # Submit button
+    submitted = form.form_submit_button(label='Predict')
+
+    # Perform prediction and display result
+    if submitted:
+        input_features = np.array([input_features])
+        prediction = predict_house_price(input_features)
+        st.success(f"The predicted house price is ${prediction[0]:.2f}")
+
+if __name__ == '__main__':
+    main()
